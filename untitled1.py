@@ -1,50 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Apr 27 20:15:34 2024
+Created on Sat May 11 20:13:56 2024
 
 @author: pranavnair
 """
+import speedtest
+import time
+import matplotlib.pyplot as plt
 
-from tkinter import *
-root = Tk()
-root.title("Inheritance")
-root.geometry("600x600")
+list_download_speed = []
+list_upload_speed = []
 
-label_name = Label(root, text="User Name : ")
-label_name.place(relx=0.3,rely=0.2, anchor=CENTER)
-entry_name = Entry(root)
-entry_name.place(relx=0.6,rely=0.2, anchor=CENTER)
-label_email = Label(root, text="Email id : ")
-label_email.place(relx=0.3,rely=0.3, anchor=CENTER)
-entry_email = Entry(root)
-entry_email.place(relx=0.6,rely=0.3, anchor=CENTER)
-label = Label(root)
+for i in range(5):
+    st = speedtest.Speedtest()
+    download_speed = round(st.download()/1000000,2)
+    list_download_speed.append(download_speed)
+    upload_speed = round(st.upload()/1000000,2)
+    list_upload_speed.append(upload_speed)
+    time.sleep(60)
+    print(list_download_speed)
+    print(list_upload_speed)
 
-dictionary = {}
-class Users: 
-        
-    def addUser(key, value): 
-         #access the dictionary variable inside the class
-         #pass parameter key as the index to the dictionary and inside it assign the parameter as value.
-         #update the text parameter of the label with variable dictionary.
-         global dictionary
-         dictionary[key] = value
-         label['text'] = dictionary
-        
-
-class GetUsers(Users): 
-        
-    def getUser(self):
-        #using get() function get the entry_name from the user and store it in variable username
-        #using the get() function get the email_id from the user and store it in variable email_id
-        #access the addUser function of the users class and inside it pass the parameters as username, email_id
-        username = entry_name.get()
-        email_id = entry_email.get()
-        Users.addUser(username, email_id)
-#Create a object of GetUsers class  
-user = GetUsers()
-btn = Button(root, text="Add user details", command=user.getUser)
-btn.place(relx=0.5,rely=0.4, anchor=CENTER)
-label.place(relx=0.5,rely=0.5, anchor=CENTER)
-root.mainloop()
+x = [1,2,3,4,5]
+plt.plot(x, list_download_speed, label = "Download Speed")
+plt.plot(x, list_upload_speed, label = "Upload Speed")
+plt.title("Speed Test plotting")
+plt.legend()
+plt.show()
